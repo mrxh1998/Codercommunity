@@ -32,7 +32,7 @@
 
     <insert id="insertUser" parameterType="User" keyProperty="id">
         insert into user (<include refid="insertFields"></include>)
-        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})
+        values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationcode}, #{headerurl}, #{createtime})
     </insert>
 
     <update id="updateStatus">
@@ -46,5 +46,8 @@
     <update id="updatePassword">
         update user set password = #{password} where id = #{id}
     </update>
+    <delete id="deleteUser">
+        delete from user  where id = #{id}
+    </delete>
 
 </mapper>

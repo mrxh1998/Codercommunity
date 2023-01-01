@@ -1,8 +1,14 @@
 package com.coder.community.controller;
 
+import com.coder.community.dao.UserMapper;
+import com.coder.community.entity.Cloth;
+import com.coder.community.entity.User;
 import com.coder.community.service.AlphaService;
+import org.aspectj.weaver.patterns.IScope;
+import org.elasticsearch.common.inject.Singleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-@Controller
+@Service()
 @RequestMapping("/alpha")
 public class AlphaController {
     @Autowired
@@ -28,7 +34,8 @@ public class AlphaController {
     public String getData(){
         return alphaService.find();
     }
-
+    @Autowired
+    UserMapper userMapper;
     @RequestMapping("http")
     public void http(HttpServletRequest request, HttpServletResponse response){
         //获取请求数据
@@ -120,5 +127,18 @@ public class AlphaController {
         emp.put("salary","30000");
         list.add(emp);
         return list;
+    }
+    @RequestMapping(path="/addUser",method = RequestMethod.POST)
+    @ResponseBody
+    public int addUser(String userName){
+        User user = new User();
+        user.setUsername(userName);
+        user.setStatus(0);
+        return userMapper.insertUser(user);
+    }
+    @RequestMapping(path="/deleteUser",method = RequestMethod.POST)
+    @ResponseBody
+    public int test(int userId){
+        return userMapper.deleteUser(userId);
     }
 }

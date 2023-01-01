@@ -1,24 +1,41 @@
 package com.coder.community.entity;
 
-import java.util.Date;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
+import java.util.Date;
+@Setting(shards = 6,replicas = 3)
+@Document(indexName = "discusspost")
 public class DiscussPost {
+
+    @Id
     private int id;
+    @Field(type = FieldType.Integer)
     private int userId;
 
-    public int getUserId() {
-        return userId;
-    }
+    @Field(type = FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    private String content;
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
+    @Field(type = FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
     private String title;
+
+    @Field(type = FieldType.Integer)
     private int type;
+
+    @Field(type = FieldType.Integer)
     private int status;
+
+    @Field(type = FieldType.Date)
     private Date createTime;
+
+    @Field(type = FieldType.Integer)
     private int commentCount;
+
+    @Field(type = FieldType.Double)
     private double score;
 
     @Override
@@ -34,7 +51,20 @@ public class DiscussPost {
                 ", score=" + score +
                 '}';
     }
+    public String getContent() {
+        return content;
+    }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
     public int getId() {
         return id;
     }
