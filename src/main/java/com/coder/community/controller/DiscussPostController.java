@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -33,7 +34,7 @@ public class DiscussPostController implements CommunityConstant {
     CommentService commentService;
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ResponseBody
-    public String addPost(String title,String content){
+    public String addPost(String title, String content, MultipartFile image){
         User user = hostHolder.getUser();
         if(user == null){
             return CommunityUtil.getJSONString(403,"你还没有登录");
