@@ -160,6 +160,9 @@
 							<span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">精华</span>
 						</h6>
 						<div class="text-muted font-size-5">
+							<video class="mr-3" th:src="${map.video}" alt="帖子视频" style="width:300px;height:300px;" controls autoplay>寒江雪</video>
+						</div>
+						<div class="text-muted font-size-5">
 							<u class="mr-3" th:utext="${map.post.content}">寒江雪</u>
 						</div>
 						<div class="text-muted font-size-12">

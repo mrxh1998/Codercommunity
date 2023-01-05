@@ -22,8 +22,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 
 @Controller
@@ -97,6 +100,7 @@ public class DiscussPostController implements CommunityConstant {
                 throw new RuntimeException("上传文件失败，服务器发生异常",e);
             }
         }
+        videoStr = domain + contextPath + "/discuss/video/"+videoStr;
         //保存
         DiscussPost post = new DiscussPost();
         post.setCreateTime(new Date());
@@ -108,6 +112,25 @@ public class DiscussPostController implements CommunityConstant {
         discussPostService.insertDiscussPost(post);
         //报错情况统一处理
         return "redirect:/index";
+    }
+    @RequestMapping(path="/video/{filename}",method = RequestMethod.GET)
+    public void getHeader(@PathVariable("filename")String filename, HttpServletResponse response){
+        filename = uploadPath + "/"+filename;
+        //声明文件格式
+        String suffix = filename.substring(filename.lastIndexOf('.'));
+        response.setContentType("video/"+suffix);
+        try(
+                OutputStream outputStream = response.getOutputStream();
+                FileInputStream fileInputStream = new FileInputStream(filename);
+        ) {
+            byte[]buffer = new byte[1024];
+            int b = 0;
+            while((b=fileInputStream.read(buffer))!=-1){
+                outputStream.write(buffer,0,b);
+            }
+        } catch (IOException e) {
+            logger.error("读取视频失败"+e.getMessage());
+        }
     }
     @RequestMapping(path="/detail/{discussPostId}",method = RequestMethod.GET)
     public String postDetail(@PathVariable("discussPostId") int id, Model model, Page page){

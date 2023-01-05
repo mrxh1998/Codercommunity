@@ -29,7 +29,7 @@
     </select>
     <insert id="insertDiscussPost" parameterType="DiscussPost">
         insert into discuss_post(<include refid="insertFields"></include>)
-        value(#{userId},#{title},#{type},#{status},#{createTime},#{commentCount},#{score},#{content},#{images},#{video})
+        value(#{userId},#{title},#{type},#{status},#{createTime},#{commentCount},#{score},#{content},#{video},#{images})
     </insert>
     <select id="selectById" resultType="DiscussPost">
         select <include refid="selectFields"></include> from discuss_post
