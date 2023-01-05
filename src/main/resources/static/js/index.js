@@ -8,10 +8,9 @@ function publish() {
 	var title = $("#recipient-name").val();
 	var content = $("#message-text").val();
 	var files = $("#head-image").prop('files');
-	var image = files[0];
 	$.post(
 	    "/community/discuss/add",
-	    {"title":title,"content":content,"image":image},
+	    {"title":title,"content":content,"files":files},
 	    function(data){
 	        data = $.parseJSON(data);
 	        //在提示框中显示返回的消息

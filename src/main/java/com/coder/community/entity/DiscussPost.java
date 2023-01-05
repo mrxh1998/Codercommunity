@@ -12,6 +12,39 @@ import java.util.Date;
 @Document(indexName = "discusspost")
 public class DiscussPost {
 
+    @Override
+    public String toString() {
+        return "DiscussPost{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", content='" + content + '\'' +
+                ", title='" + title + '\'' +
+                ", video='" + video + '\'' +
+                ", images='" + images + '\'' +
+                ", type=" + type +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", commentCount=" + commentCount +
+                ", score=" + score +
+                '}';
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
+    }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
+
     @Id
     private int id;
     @Field(type = FieldType.Integer)
@@ -22,6 +55,12 @@ public class DiscussPost {
 
     @Field(type = FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
     private String title;
+
+    @Field(type = FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    private String video;
+
+    @Field(type = FieldType.Text,analyzer = "ik_max_word",searchAnalyzer = "ik_smart")
+    private String images;
 
     @Field(type = FieldType.Integer)
     private int type;
@@ -38,19 +77,6 @@ public class DiscussPost {
     @Field(type = FieldType.Double)
     private double score;
 
-    @Override
-    public String toString() {
-        return "DiscussPost{" +
-                "id=" + id +
-                ", userid='" + userId + '\'' +
-                ", title='" + title + '\'' +
-                ", type=" + type +
-                ", status=" + status +
-                ", createTime=" + createTime +
-                ", commentCount=" + commentCount +
-                ", score=" + score +
-                '}';
-    }
     public String getContent() {
         return content;
     }

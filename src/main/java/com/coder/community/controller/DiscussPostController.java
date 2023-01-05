@@ -11,17 +11,25 @@ import com.coder.community.service.UserService;
 import com.coder.community.util.CommunityConstant;
 import com.coder.community.util.CommunityUtil;
 import com.coder.community.util.HostHolder;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Controller
 @RequestMapping("/discuss")
 public class DiscussPostController implements CommunityConstant {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     LikeService likeService;
     @Autowired
@@ -32,21 +40,74 @@ public class DiscussPostController implements CommunityConstant {
     HostHolder hostHolder;
     @Autowired
     CommentService commentService;
+    @Value("${community.path.domain}")
+    private String domain;
+    @Value("${community.path.upload}")
+    private String uploadPath;
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    @ResponseBody
-    public String addPost(String title, String content, MultipartFile image){
+    public String addPost(String title, String content, MultipartFile[] images ,MultipartFile video){
         User user = hostHolder.getUser();
         if(user == null){
             return CommunityUtil.getJSONString(403,"你还没有登录");
         }
+        //保存图片文件
+        String imagesStr = "";
+        if(images != null && images.length != 0){
+            for(int i = 0; i < images.length; i++){
+                MultipartFile image = images[i];
+                if(StringUtils.isBlank(image.getOriginalFilename())){
+                    continue;
+                }
+                String originalFilename = image.getOriginalFilename();
+                String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+                if(StringUtils.isBlank(suffix)){
+                    throw new RuntimeException("上传文件失败，服务器发生异常");
+                }
+                String filename = CommunityUtil.generateUUID()+suffix;
+                //确定文件存放路径
+                File dest = new File(uploadPath+"/"+filename);
+                imagesStr += filename;
+                imagesStr += "|";
+                try {
+                    image.transferTo(dest);
+                } catch (IOException e) {
+                    logger.error("上传文件失败"+e.getMessage());
+                    throw new RuntimeException("上传文件失败，服务器发生异常",e);
+                }
+            }
+        }
+        String videoStr = "";
+        //保存视频文件
+        if(video != null && !StringUtils.isBlank(video.getOriginalFilename())){
+            String originalFilename = video.getOriginalFilename();
+            String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+            if(StringUtils.isBlank(suffix)){
+                throw new RuntimeException("上传文件失败，服务器发生异常");
+            }
+            String filename = CommunityUtil.generateUUID()+suffix;
+            //确定文件存放路径
+            File dest = new File(uploadPath+"/"+filename);
+            videoStr = filename;
+            try {
+                video.transferTo(dest);
+            } catch (IOException e) {
+                logger.error("上传文件失败"+e.getMessage());
+                throw new RuntimeException("上传文件失败，服务器发生异常",e);
+            }
+        }
+        //保存
         DiscussPost post = new DiscussPost();
         post.setCreateTime(new Date());
         post.setUserId(user.getId());
         post.setTitle(title);
         post.setContent(content);
+        post.setImages(imagesStr);
+        post.setVideo(videoStr);
         discussPostService.insertDiscussPost(post);
         //报错情况统一处理
-        return CommunityUtil.getJSONString(0,"发布成功");
+        return "redirect:/index";
     }
     @RequestMapping(path="/detail/{discussPostId}",method = RequestMethod.GET)
     public String postDetail(@PathVariable("discussPostId") int id, Model model, Page page){
