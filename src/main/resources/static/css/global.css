@@ -143,3 +143,30 @@ em {
 	font-style: normal;
 	color: red;
 }
+
+.img_content {
+    display: none;
+    position: absolute;
+    margin: 5% 0 0 0%;
+    background-color: white;
+    z-index:1002;
+    overflow: auto;
+    border: solid 1px #3488db;
+    height:480px;
+    width:650px;
+}
+.colse_btn {
+    border: solid 1px #3488db;
+    color: white;
+    margin: 5px 10px 0 0;
+    height: 30px;
+    line-height:30px;
+    width: 60px;
+    background: #3488db;
+    border-radius: .5em;
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    float:right;
+}

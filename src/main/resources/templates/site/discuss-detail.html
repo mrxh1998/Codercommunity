@@ -96,6 +96,19 @@
 					</div>
 				</div>	
 				<!-- 正文 -->
+				<div class="text-muted font-size-5">
+					<video class="mr-3" th:src="${video}" alt="帖子视频" style="width:300px;height:300px;" controls
+						   th:if="${video!=null}">寒江雪</video>
+				</div>
+				<ul style="overflow:hidden;list-style:none;padding:10px 10px 0px 0px" >
+					<li th:each="image:${imageList}" >
+						<div class="img_content" id="imgContent" style="display: none" >
+							<div style="margin: 10px 10px 0 10px; float:left" ><img src="" width="600px" height="420px" id="imgCon"></div>
+							<div  class="colse_btn" onclick="col()">关闭</div>
+						</div>
+						<img  id="srcimg" th:src="${image}" onclick="showImg(this.src)" alt="用户图片" style="width:150px;height:105px;float:left;margin-right:25px" >
+					</li>
+				</ul>
 				<div class="mt-4 mb-3 content" th:text="${post.content}">
 					金三银四的金三已经到了，你还沉浸在过年的喜悦中吗？
 					如果是，那我要让你清醒一下了：目前大部分公司已经开启了内推，正式网申也将在3月份陆续开始，金三银四，春招的求职黄金时期已经来啦！！！
@@ -298,5 +311,15 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 	<script th:src="@{/js/global.js}"></script>
 	<script th:src="@{/js/discuss.js}"></script>
+	<script>
+		function col() {
+			document.getElementById('imgContent').style.display='none';
+			document.getElementById('srcimg').style.display='block';
+		}
+		function showImg(url) {
+			document.getElementById('imgCon').src = url;
+			document.getElementById('imgContent').style.display='block';
+		}
+	 </script>
 </body>
 </html>

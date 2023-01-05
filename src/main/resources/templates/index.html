@@ -165,7 +165,12 @@
 						</div>
 						<ul style="overflow:hidden;list-style:none;padding:10px 10px 0px 0px" >
 							<li th:each="image:${map.imageList}" >
-								<img  th:src="${image}"  alt="用户图片" style="width:150px;height:105px;float:left;margin-right:25px" >							</li>
+								<div class="img_content" id="imgContent" style="display: none" >
+									<div style="margin: 10px 10px 0 10px; float:left" ><img src="" width="600px" height="420px" id="imgCon"></div>
+									<div  class="colse_btn" onclick="col()">关闭</div>
+								</div>
+								<img  id="srcimg" th:src="${image}" onclick="showImg(this.src)" alt="用户图片" style="width:150px;height:105px;float:left;margin-right:25px" >
+							</li>
 						</ul>
 						<div>
 							<u class="mt-4 mb-3 content" style="font-size:15px" th:utext="${map.post.content}">寒江雪</u>
@@ -277,5 +282,15 @@
 			bsCustomFileInput.init();
 		});
 	</script>
+<script>
+		function col() {
+			document.getElementById('imgContent').style.display='none';
+			document.getElementById('srcimg').style.display='block';
+		}
+		function showImg(url) {
+			document.getElementById('imgCon').src = url;
+			document.getElementById('imgContent').style.display='block';
+		}
+	 </script>
 </body>
 </html>

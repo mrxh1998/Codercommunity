@@ -157,6 +157,15 @@ public class DiscussPostController implements CommunityConstant {
         model.addAttribute("post",discussPost);
         User user = userService.selectById(discussPost.getUserId());
         model.addAttribute("user",user);
+        model.addAttribute("video",discussPost.getVideo());
+        List imageList = new ArrayList();
+        if(!StringUtils.isBlank(discussPost.getImages())){
+            String[] split = discussPost.getImages().split("[+]");
+            for(String image : split){
+                imageList.add(domain + contextPath + "/discuss/image/"+image);
+            }
+        }
+        model.addAttribute("imageList",imageList);
         //该帖子的赞数和赞的状态返回
         model.addAttribute("likeCount",likeService.entityLikeCount(ENTITY_TYPE_POST,discussPost.getId()));
         int likeStatus = hostHolder.getUser()==null?0:
