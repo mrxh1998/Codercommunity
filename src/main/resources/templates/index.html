@@ -151,19 +151,24 @@
 			<ul class="list-unstyled">
 				<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussPosts}">
 					<a th:href="@{|/user/profile/${map.user.id}|}">
-						<img th:src="${map.user.headerurl}" class="mr-4 rounded-circle" alt="用户头像" style="width:50px;height:50px;">
+						<img th:src="${map.user.headerurl}"  alt="用户头像" style="width:50px;height:50px;">
 					</a>
 					<div class="media-body">
 						<h6 class="mt-0 mb-3">
-							<a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
+							<a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}" >备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							<span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">置顶</span>
 							<span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">精华</span>
 						</h6>
 						<div class="text-muted font-size-5">
-							<video class="mr-3" th:src="${map.video}" alt="帖子视频" style="width:300px;height:300px;" controls autoplay>寒江雪</video>
+							<video class="mr-3" th:src="${map.video}" alt="帖子视频" style="width:300px;height:300px;" controls
+								   th:if="${map.video!=null}">寒江雪</video>
 						</div>
-						<div class="text-muted font-size-5">
-							<u class="mr-3" th:utext="${map.post.content}">寒江雪</u>
+						<ul style="overflow:hidden;list-style:none;padding:10px 10px 0px 0px" >
+							<li th:each="image:${map.imageList}" >
+								<img  th:src="${image}"  alt="用户图片" style="width:150px;height:105px;float:left;margin-right:25px" >							</li>
+						</ul>
+						<div>
+							<u class="mt-4 mb-3 content" style="font-size:15px" th:utext="${map.post.content}">寒江雪</u>
 						</div>
 						<div class="text-muted font-size-12">
 							<u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>

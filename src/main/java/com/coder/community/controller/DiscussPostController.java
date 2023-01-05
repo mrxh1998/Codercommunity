@@ -72,7 +72,7 @@ public class DiscussPostController implements CommunityConstant {
                 //确定文件存放路径
                 File dest = new File(uploadPath+"/"+filename);
                 imagesStr += filename;
-                imagesStr += "|";
+                imagesStr += "+";
                 try {
                     image.transferTo(dest);
                 } catch (IOException e) {
@@ -114,7 +114,7 @@ public class DiscussPostController implements CommunityConstant {
         return "redirect:/index";
     }
     @RequestMapping(path="/video/{filename}",method = RequestMethod.GET)
-    public void getHeader(@PathVariable("filename")String filename, HttpServletResponse response){
+    public void getVideo(@PathVariable("filename")String filename, HttpServletResponse response){
         filename = uploadPath + "/"+filename;
         //声明文件格式
         String suffix = filename.substring(filename.lastIndexOf('.'));
@@ -130,6 +130,25 @@ public class DiscussPostController implements CommunityConstant {
             }
         } catch (IOException e) {
             logger.error("读取视频失败"+e.getMessage());
+        }
+    }
+    @RequestMapping(path="/image/{filename}",method = RequestMethod.GET)
+    public void getImage(@PathVariable("filename")String filename, HttpServletResponse response){
+        filename = uploadPath + "/"+filename;
+        //声明文件格式
+        String suffix = filename.substring(filename.lastIndexOf('.'));
+        response.setContentType("image/"+suffix);
+        try(
+                OutputStream outputStream = response.getOutputStream();
+                FileInputStream fileInputStream = new FileInputStream(filename);
+        ) {
+            byte[]buffer = new byte[1024];
+            int b = 0;
+            while((b=fileInputStream.read(buffer))!=-1){
+                outputStream.write(buffer,0,b);
+            }
+        } catch (IOException e) {
+            logger.error("读取图片"+e.getMessage());
         }
     }
     @RequestMapping(path="/detail/{discussPostId}",method = RequestMethod.GET)

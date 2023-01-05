@@ -8,7 +8,9 @@ import com.coder.community.service.LikeService;
 import com.coder.community.service.UserService;
 import com.coder.community.util.CommunityConstant;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,12 @@ import java.util.Map;
 
 @Controller
 public class HomeController implements CommunityConstant {
+    @Value("${community.path.domain}")
+    private String domain;
+    @Value("${community.path.upload}")
+    private String uploadPath;
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
     @Autowired
     UserService userService;
     @Autowired
@@ -42,6 +50,14 @@ public class HomeController implements CommunityConstant {
                 map.put("post",post);
                 map.put("user",user);
                 map.put("video",post.getVideo());
+                List imageList = new ArrayList();
+                if(!StringUtils.isBlank(post.getImages())){
+                    String[] split = post.getImages().split("[+]");
+                    for(String image : split){
+                        imageList.add(domain + contextPath + "/discuss/image/"+image);
+                    }
+                }
+                map.put("imageList",imageList);
                 long likeCount = likeService.entityLikeCount(ENTITY_TYPE_POST, post.getId());
                 map.put("likeCount",likeCount);
                 discussPosts.add(map);
