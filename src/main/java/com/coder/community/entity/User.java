@@ -8,7 +8,7 @@ public class User {
     private String password;
     private String salt;
     private String email;
-    private int type;
+    private int type; //0为普通用户 1为管理员
     private int status;
     private String activationcode;
     private String headerurl;

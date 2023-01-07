@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coder.community.dao.ProductMapper">
+    <sql id="selectFields">
+        id,product_name,new_time,image_url,introduction
+    </sql>
+    <sql id="insertFields">
+        product_name,new_time,image_url,introduction
+    </sql>
+    <insert id="insertProduct" parameterType="Product">
+        insert into product(<include refid="insertFields"></include>)
+        value(#{productName},#{newTime},#{imageUrl},#{introduction})
+    </insert>
+</mapper>
