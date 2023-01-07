@@ -1,7 +1,11 @@
 package com.coder.community.controller;
 
 import com.coder.community.annotation.LoginRequired;
+import com.coder.community.entity.DiscussPost;
+import com.coder.community.entity.Page;
+import com.coder.community.entity.Product;
 import com.coder.community.entity.User;
+import com.coder.community.service.DiscussPostService;
 import com.coder.community.service.FollowService;
 import com.coder.community.service.LikeService;
 import com.coder.community.service.UserService;
@@ -24,6 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(path = "/user")
@@ -44,6 +52,8 @@ public class UserController implements CommunityConstant {
     private HostHolder hostHolder;
     @Autowired
     private FollowService followService;
+    @Autowired
+    private DiscussPostService discussPostService;
     @LoginRequired
     @RequestMapping(path="/setting",method = RequestMethod.GET)
     public String setting(){
@@ -146,5 +156,37 @@ public class UserController implements CommunityConstant {
         }
         model.addAttribute("followStatus",followStatus);
         return "/site/profile";
+    }
+    @RequestMapping(path = "/userPosts/{userId}",method = RequestMethod.GET)
+    public String getUserPosts(Page page,Model model,@PathVariable int userId){
+        page.setRows(discussPostService.selectDiscussPostRows(0));
+        page.setPath("/user/userPosts/"+userId);
+        List<DiscussPost> list = discussPostService.selectDiscussPosts(userId,page.getOffset(),page.getLimit(),0);
+        int postCount = discussPostService.selectDiscussPostRows(userId);
+        List<Map<String,Object>> discussPosts = new ArrayList<>();
+        User user = userService.selectById(userId);
+        if(list!= null){
+            for(DiscussPost post: list){
+                Map<String,Object> map = new HashMap<>();
+                map.put("post",post);
+                map.put("video",post.getVideo());
+                List imageList = new ArrayList();
+                if(!StringUtils.isBlank(post.getImages())){
+                    String[] split = post.getImages().split("[+]");
+                    for(String image : split){
+                        imageList.add(domain + contextPath + "/discuss/image/"+image);
+                    }
+                }
+                map.put("imageList",imageList);
+                long likeCount = likeService.entityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount",likeCount);
+                discussPosts.add(map);
+            }
+        }
+        //查询产品列表
+        model.addAttribute("discussPosts",discussPosts);
+        model.addAttribute("user",user);
+        model.addAttribute("postCount",postCount);
+        return "/site/myPost";
     }
 }
