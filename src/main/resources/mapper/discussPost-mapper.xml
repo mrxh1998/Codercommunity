@@ -7,7 +7,7 @@
         id,user_id,title,type,status,create_time,comment_count,score,content,video,images,product_Id
     </sql>
     <sql id="insertFields">
-        user_id,title,type,status,create_time,comment_count,score,content,video,images
+        user_id,title,type,status,create_time,comment_count,score,content,video,images,product_id
     </sql>
     <select id="selectDiscussPosts" resultType="DiscussPost">
         select <include refid="selectFields"></include>
@@ -32,7 +32,7 @@
     </select>
     <insert id="insertDiscussPost" parameterType="DiscussPost">
         insert into discuss_post(<include refid="insertFields"></include>)
-        value(#{userId},#{title},#{type},#{status},#{createTime},#{commentCount},#{score},#{content},#{video},#{images})
+        value(#{userId},#{title},#{type},#{status},#{createTime},#{commentCount},#{score},#{content},#{video},#{images},#{productId})
     </insert>
     <select id="selectById" resultType="DiscussPost">
         select <include refid="selectFields"></include> from discuss_post

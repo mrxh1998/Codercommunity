@@ -50,7 +50,8 @@ public class DiscussPostController implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addPost(String title, String content, MultipartFile[] images ,MultipartFile video){
+    public String addPost(String title, String content, MultipartFile[] images ,MultipartFile video,String productId){
+        int product_id = Integer.valueOf(productId);
         User user = hostHolder.getUser();
         if(user == null){
             return CommunityUtil.getJSONString(403,"你还没有登录");
@@ -99,8 +100,8 @@ public class DiscussPostController implements CommunityConstant {
                 logger.error("上传文件失败"+e.getMessage());
                 throw new RuntimeException("上传文件失败，服务器发生异常",e);
             }
+            videoStr = domain + contextPath + "/discuss/video/"+videoStr;
         }
-        videoStr = domain + contextPath + "/discuss/video/"+videoStr;
         //保存
         DiscussPost post = new DiscussPost();
         post.setCreateTime(new Date());
@@ -108,10 +109,15 @@ public class DiscussPostController implements CommunityConstant {
         post.setTitle(title);
         post.setContent(content);
         post.setImages(imagesStr);
-        post.setVideo(videoStr);
+        if(!StringUtils.isBlank(videoStr)){
+            post.setVideo(videoStr);
+        }
+        if(product_id != 0){
+            post.setProductId(product_id);
+        }
         discussPostService.insertDiscussPost(post);
         //报错情况统一处理
-        return "redirect:/index";
+        return "redirect:/index"+"?"+"productId="+product_id;
     }
     @RequestMapping(path="/video/{filename}",method = RequestMethod.GET)
     public void getVideo(@PathVariable("filename")String filename, HttpServletResponse response){

@@ -149,6 +149,10 @@
 									<label for="message-text" class="col-form-label">正文：</label>
 									<textarea class="form-control" id="message-text" rows="15" name="content"></textarea>
 								</div>
+								<div class="form-group" hidden="hidden">
+									<label for="message-text" class="col-form-label">正文：</label>
+									<input class="form-control" id="productId" rows="15" name="productId" th:value="${productId}">
+								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
 									<button type="submit" class="btn btn-info text-white form-control">发布</button>
