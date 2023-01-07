@@ -13,6 +13,7 @@
         select <include refid="selectFields"></include>
         from discuss_post
         where status != 2
+        and type != 2
         <if test="userId != 0">
             and user_id = #{userId}
         </if>
@@ -26,6 +27,7 @@
         select count(id)
         from discuss_post
         where status != 2
+        and type != 2
         <if test="userId != 0">
             and user_id = #{userId}
         </if>
@@ -43,4 +45,10 @@
         set comment_count = #{count}
         where id = #{id}
     </update>
+    <select id="selectAllSpecialPosts" resultType="DiscussPost">
+        select <include refid="selectFields"></include> from discuss_post
+        where type = 2
+        and status != 2
+        order by create_time DESC
+    </select>
 </mapper>

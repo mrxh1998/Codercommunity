@@ -77,6 +77,9 @@ public class HomeController implements CommunityConstant {
         model.addAttribute("discussPosts",discussPosts);
         model.addAttribute("productList",productList);
         model.addAttribute("productId",product_id);
+        //查询资讯列表
+        List<DiscussPost> aLlSpecialPosts = discussPostService.getALlSpecialPosts();
+        model.addAttribute("specialPostList",aLlSpecialPosts);
         return "/index";
     }
 

@@ -50,35 +50,34 @@ public class DiscussPostController implements CommunityConstant {
     @Value("${server.servlet.context-path}")
     private String contextPath;
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public String addPost(String title, String content, MultipartFile[] images ,MultipartFile video,String productId){
-        int product_id = Integer.valueOf(productId);
+    public String addPost(String title, String content, MultipartFile[] images ,MultipartFile video,String productId,String postType){
+        int product_id = Integer.parseInt(productId);
         User user = hostHolder.getUser();
         if(user == null){
             return CommunityUtil.getJSONString(403,"你还没有登录");
         }
         //保存图片文件
-        String imagesStr = "";
+        StringBuilder imagesStr = new StringBuilder();
         if(images != null && images.length != 0){
-            for(int i = 0; i < images.length; i++){
-                MultipartFile image = images[i];
-                if(StringUtils.isBlank(image.getOriginalFilename())){
+            for (MultipartFile image : images) {
+                if (StringUtils.isBlank(image.getOriginalFilename())) {
                     continue;
                 }
                 String originalFilename = image.getOriginalFilename();
                 String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
-                if(StringUtils.isBlank(suffix)){
+                if (StringUtils.isBlank(suffix)) {
                     throw new RuntimeException("上传文件失败，服务器发生异常");
                 }
-                String filename = CommunityUtil.generateUUID()+suffix;
+                String filename = CommunityUtil.generateUUID() + suffix;
                 //确定文件存放路径
-                File dest = new File(uploadPath+"/"+filename);
-                imagesStr += filename;
-                imagesStr += "+";
+                File dest = new File(uploadPath + "/" + filename);
+                imagesStr.append(filename);
+                imagesStr.append("+");
                 try {
                     image.transferTo(dest);
                 } catch (IOException e) {
-                    logger.error("上传文件失败"+e.getMessage());
-                    throw new RuntimeException("上传文件失败，服务器发生异常",e);
+                    logger.error("上传文件失败" + e.getMessage());
+                    throw new RuntimeException("上传文件失败，服务器发生异常", e);
                 }
             }
         }
@@ -108,7 +107,10 @@ public class DiscussPostController implements CommunityConstant {
         post.setUserId(user.getId());
         post.setTitle(title);
         post.setContent(content);
-        post.setImages(imagesStr);
+        post.setImages(imagesStr.toString());
+        if(!StringUtils.isBlank(postType)){
+            post.setType(Integer.parseInt(postType));
+        }
         if(!StringUtils.isBlank(videoStr)){
             post.setVideo(videoStr);
         }

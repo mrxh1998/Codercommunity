@@ -63,7 +63,7 @@ public class DiscussPost {
     private String images;
 
     @Field(type = FieldType.Integer)
-    private int type;
+    private int type; //0:普通 1:置顶 2:资讯（specialPost）
 
     private int productId;
 
@@ -76,7 +76,7 @@ public class DiscussPost {
     }
 
     @Field(type = FieldType.Integer)
-    private int status;
+    private int status;//0：普通 1：精华 2：封禁
 
     @Field(type = FieldType.Date)
     private Date createTime;

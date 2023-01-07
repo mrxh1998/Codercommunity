@@ -13,4 +13,5 @@ public interface DiscussPostMapper {
     int insertDiscussPost(DiscussPost discussPost);
     DiscussPost selectById(int id);
     int updateCommentCount(int count,int id);
+    List<DiscussPost> selectAllSpecialPosts();
 }

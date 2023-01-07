@@ -39,4 +39,7 @@ public class DiscussPostService {
     public int updateDiscussPostCount(int count,int id){
         return discussPostMapper.updateCommentCount(count,id);
     }
+    public List<DiscussPost> getALlSpecialPosts(){
+        return discussPostMapper.selectAllSpecialPosts();
+    }
 }
