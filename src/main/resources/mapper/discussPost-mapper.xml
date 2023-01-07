@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.coder.community.dao.DiscussPostMapper">
     <sql id="selectFields">
-        id,user_id,title,type,status,create_time,comment_count,score,content,video,images
+        id,user_id,title,type,status,create_time,comment_count,score,content,video,images,product_Id
     </sql>
     <sql id="insertFields">
         user_id,title,type,status,create_time,comment_count,score,content,video,images
@@ -15,6 +15,9 @@
         where status != 2
         <if test="userId != 0">
             and user_id = #{userId}
+        </if>
+        <if test="productId != 0">
+            and product_id = #{productId}
         </if>
         order by type DESC,create_time DESC
         limit #{offset},#{limit}

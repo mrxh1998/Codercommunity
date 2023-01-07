@@ -15,8 +15,8 @@ public class DiscussPostService {
     DiscussPostMapper discussPostMapper;
     @Autowired
     SensitiveFilter sensitiveFilter;
-    public List<DiscussPost>  selectDiscussPosts(int userId,int offset,int limit){
-        return discussPostMapper.selectDiscussPosts(userId, offset, limit);
+    public List<DiscussPost>  selectDiscussPosts(int userId,int offset,int limit,int productId){
+        return discussPostMapper.selectDiscussPosts(userId, offset, limit,productId);
     }
     public int selectDiscussPostRows(int userId){
         return discussPostMapper.selectDiscussPostsRows(userId);

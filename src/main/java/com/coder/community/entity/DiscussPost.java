@@ -65,6 +65,16 @@ public class DiscussPost {
     @Field(type = FieldType.Integer)
     private int type;
 
+    private int productId;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
     @Field(type = FieldType.Integer)
     private int status;
 

@@ -13,4 +13,9 @@
         insert into product(<include refid="insertFields"></include>)
         value(#{productName},#{newTime},#{imageUrl},#{introduction})
     </insert>
+    <select id="selectAllProduct" resultType="Product">
+        select <include refid="selectFields"></include>
+        from product
+        order by new_time DESC
+    </select>
 </mapper>

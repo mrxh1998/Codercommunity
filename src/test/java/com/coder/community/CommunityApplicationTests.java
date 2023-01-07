@@ -69,8 +69,6 @@ class CommunityApplicationTests implements ApplicationContextAware {
 	public void testSelectDiscussPost(){
 		System.out.println(discussPostMapper.selectDiscussPostsRows(0));
 		System.out.println(discussPostMapper.selectDiscussPostsRows(1));
-		System.out.println(discussPostMapper.selectDiscussPosts(0,1,5));
-		System.out.println(discussPostMapper.selectDiscussPosts(1,0,5));
 	}
 	@Autowired
 	DiscussPostService discussPostService;
@@ -79,7 +77,7 @@ class CommunityApplicationTests implements ApplicationContextAware {
 	@Test
 	public void testUserDiscussService(){
 		System.out.println(discussPostMapper.selectDiscussPostsRows(111));
-		System.out.println(discussPostService.selectDiscussPosts(111,0,5));
+
 		System.out.println(userService.selectById(111).toString());
 	}
 	@Autowired
