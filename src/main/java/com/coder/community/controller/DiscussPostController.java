@@ -188,7 +188,7 @@ public class DiscussPostController implements CommunityConstant {
         model.addAttribute("likeStatus", likeStatus);
         //该帖子的收藏状态返回
         int collectStatus = hostHolder.getUser() == null ? 0 :
-                discussPostService.postCollectStatus(hostHolder.getUser().getId(), discussPost.getId());
+                discussPostService.isCollectPost(hostHolder.getUser().getId(), discussPost.getId()) ? 1 : 0;
         model.addAttribute("collectStatus", collectStatus);
         //查评论的分页信息
         page.setLimit(5);
@@ -270,7 +270,12 @@ public class DiscussPostController implements CommunityConstant {
     @RequestMapping(path = "/collect/{postId}", method = RequestMethod.GET)
     public String collectPost(@PathVariable int postId) {
         User user = hostHolder.getUser();
-        discussPostService.collectPost(user.getId(), postId);
+        boolean collectPost = discussPostService.isCollectPost(user.getId(), postId);
+        if (collectPost) {
+            discussPostService.unCollect(user.getId(), postId);
+        } else {
+            discussPostService.collect(user.getId(), postId);
+        }
         return "redirect:/discuss/detail/" + postId;
     }
 

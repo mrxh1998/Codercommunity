@@ -2,6 +2,7 @@ package com.coder.community.service;
 
 import com.coder.community.dao.DiscussPostMapper;
 import com.coder.community.entity.DiscussPost;
+import com.coder.community.entity.User;
 import com.coder.community.util.CommunityUtil;
 import com.coder.community.util.RedisKeyUtil;
 import com.coder.community.util.SensitiveFilter;
@@ -14,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class DiscussPostService {
@@ -81,37 +81,60 @@ public class DiscussPostService {
             throw new RuntimeException("更新数据库失败");
         }
     }
-
-    public void collectPost(int userId, int postId) {
-
+    public void collect(int userId,int postId){
         redisTemplate.execute(new SessionCallback() {
             @Override
             public Object execute(RedisOperations operations) throws DataAccessException {
-                String userKey = RedisKeyUtil.getUserCollectKey(userId);
-                String postKey = RedisKeyUtil.getPostCollectedKey(postId);
-                String userCountKey = RedisKeyUtil.getUserCollectCountKey(userId);
-                String postCountKey = RedisKeyUtil.getPostCollectedCountKey(postId);
-                Boolean isCollect = redisTemplate.opsForSet().isMember(userKey, postId);
+                String userCollectKey = RedisKeyUtil.getUserCollectKey(userId);
+                String postCollectedKey = RedisKeyUtil.getPostCollectedKey(postId);
                 operations.multi();
-                if (isCollect) {
-                    operations.opsForSet().remove(userKey, postId);
-                    operations.opsForSet().remove(postKey, userId);
-                    operations.opsForValue().decrement(userCountKey);
-                    operations.opsForValue().decrement(postCountKey);
-                } else {
-                    operations.opsForSet().add(userKey, postId);
-                    operations.opsForSet().add(postKey, userId);
-                    operations.opsForValue().increment(userCountKey);
-                    operations.opsForValue().increment(postCountKey);
-                }
+                operations.opsForZSet().add(userCollectKey,postId,System.currentTimeMillis());
+                operations.opsForZSet().add(postCollectedKey,userId,System.currentTimeMillis());
                 return operations.exec();
             }
         });
     }
-    //判断某个人是否收藏
-    public int postCollectStatus(int userId,int postId){
-        String userCollectKey = RedisKeyUtil.getUserCollectKey(userId);
-        return Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(userCollectKey, postId)) ?1:0;
 
+    public void unCollect(int userId,int postId){
+        redisTemplate.execute(new SessionCallback() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                String userCollectKey = RedisKeyUtil.getUserCollectKey(userId);
+                String postCollectedKey = RedisKeyUtil.getPostCollectedKey(postId);
+                operations.multi();
+                operations.opsForZSet().remove(userCollectKey,postId);
+                operations.opsForZSet().remove(postCollectedKey,userId);
+                return operations.exec();
+            }
+        });
     }
+    //查询该用户是否已收藏帖子
+    public boolean isCollectPost(int userId,int postId){
+        String userCollectKey = RedisKeyUtil.getUserCollectKey(userId);
+        return redisTemplate.opsForZSet().score(userCollectKey, postId) != null;
+    }
+    //得到某个人收藏的贴子数
+    public Long getUserCollectCount(int userId){
+        String userCollectKey = RedisKeyUtil.getUserCollectKey(userId);
+        Long aLong = redisTemplate.opsForZSet().zCard(userCollectKey);
+        return aLong==null?0:aLong;
+    }
+//    //查询用户收藏的的帖子
+//    public List<Map<String,Object>> findUserCollect(User user, int offset, int limit){
+//        String userCollectKey = RedisKeyUtil.getUserCollectKey(user.getId());
+//        List<Map<String,Object>> collectPosts = new ArrayList<>();
+//        Set<Integer> set = redisTemplate.opsForSet().members(userCollectKey, offset, offset + limit-1);
+//        if(set == null){
+//            return null;
+//        }
+//        for(Integer a:set){
+//            User user = userMapper.selectById(a);
+//            Double score = redisTemplate.opsForZSet().score(followeeKey, a);
+//            Map<String,Object> map = new HashMap<>();
+//            map.put("user",user);
+//            map.put("followTime",new Date(score.longValue()));
+//            followees.add(map);
+//        }
+//        return followees;
+//    }
 }

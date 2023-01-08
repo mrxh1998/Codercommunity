@@ -73,6 +73,9 @@
 						<li class="nav-item">
 							<a class="nav-link" th:href="@{|/user/userReply/${user.id}|}"  th:if="${loginUser.id==user.id}">我的回复</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link"th:href="@{|/user/userCollect/${user.id}|}" th:text="${loginUser.id==user.id?'我的收藏':'他的收藏'}">我的回复</a>
+						</li>
 					</ul>
 				</div>
 				<!-- 个人信息 -->

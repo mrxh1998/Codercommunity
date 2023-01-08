@@ -229,4 +229,36 @@ public class UserController implements CommunityConstant {
         model.addAttribute("discussPosts", discussPosts);
         return "/site/my-reply";
     }
+    @RequestMapping(path = "/userCollect/{userId}", method = RequestMethod.GET)
+    public String getUserCollect(Page page, Model model, @PathVariable int userId) {
+        //page.setRows(discussPostService.getUserCollectCount(userId));
+        page.setPath("/user/userPosts/" + userId);
+        List<DiscussPost> list = discussPostService.selectDiscussPosts(userId, page.getOffset(), page.getLimit(), 0);
+        int postCount = discussPostService.selectDiscussPostRows(userId, 0);
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
+        User user = userService.selectById(userId);
+        if (list != null) {
+            for (DiscussPost post : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", post);
+                map.put("video", post.getVideo());
+                List imageList = new ArrayList();
+                if (!StringUtils.isBlank(post.getImages())) {
+                    String[] split = post.getImages().split("[+]");
+                    for (String image : split) {
+                        imageList.add(domain + contextPath + "/discuss/image/" + image);
+                    }
+                }
+                map.put("imageList", imageList);
+                long likeCount = likeService.entityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount", likeCount);
+                discussPosts.add(map);
+            }
+        }
+        //查询产品列表
+        model.addAttribute("discussPosts", discussPosts);
+        model.addAttribute("user", user);
+        model.addAttribute("postCount", postCount);
+        return "/site/myPost";
+    }
 }
