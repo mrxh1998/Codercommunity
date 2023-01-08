@@ -21,4 +21,11 @@ public class ProductService {
     public List<Product> getAllProduct(){
         return productMapper.selectAllProduct();
     }
+
+    public Product findProductById(int productId){
+        if(productId == 0){
+            return null;
+        }
+        return productMapper.selectProductById(productId);
+    }
 }

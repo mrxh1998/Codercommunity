@@ -110,6 +110,20 @@
 			</div>
 
 			<div class="container">
+				<div class="product-sortthis" style="display: block;" id="app" th:if="${product!=null}">
+					<div class="product_all">
+						<canvas id="canvas" style="display: none;"></canvas>
+						<div class="product_img">
+							<img th:src="${product.imageUrl}" class="round_icon"  id="p_img" alt="">
+						</div>
+						<div class="product_info">
+							<div class="HeadInfo_descText__27YYC" id="box" th:text="${product.introduction}">如今互联网资源丰富，有很多网站开发人员可以在网络上搜索到很多网站模板下载的网站，那么今天小编推荐一个比较好的网站模板下载的站点，该网站里可以下载行业模板、电商模板、商务模板、综合模板、个人博客模板等一系列好看的网站模板。</div>
+						</div>
+					</div>
+					<div class="product_title" th:text="${product.productName}">
+						xaiomi
+					</div>
+				</div>
 				<div class="position-relative">
 					<!-- 筛选条件 -->
 					<ul class="nav nav-tabs mb-3">

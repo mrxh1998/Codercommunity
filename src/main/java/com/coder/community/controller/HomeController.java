@@ -90,6 +90,9 @@ public class HomeController implements CommunityConstant {
         if(allSpecialPosts.size() > specialPostMaxSize){
             allSpecialPosts = allSpecialPosts.subList(0,specialPostMaxSize);
         }
+        //查询当前产品
+        Product productById = productService.findProductById(product_id);
+        model.addAttribute("product",productById);
         model.addAttribute("specialPostList",allSpecialPosts);
         return "/index";
     }

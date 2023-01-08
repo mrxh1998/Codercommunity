@@ -9,4 +9,5 @@ import java.util.List;
 public interface ProductMapper {
     int insertProduct(Product product);
     List<Product> selectAllProduct();
+    Product selectProductById(int productId);
 }

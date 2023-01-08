@@ -18,4 +18,9 @@
         from product
         order by new_time DESC
     </select>
+    <select id="selectProductById" resultType="Product">
+        select <include refid="selectFields"></include>
+        from product
+        where id = #{productId}
+    </select>
 </mapper>
