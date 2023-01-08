@@ -7,7 +7,6 @@ import com.coder.community.util.CommunityConstant;
 import com.coder.community.util.CommunityUtil;
 import com.coder.community.util.HostHolder;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.common.util.set.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,43 +199,44 @@ public class UserController implements CommunityConstant {
         discussPostIds.addAll(commentService.selectCommentByIds(replyIds).stream().map(Comment::getEntityId)
                 .collect(Collectors.toSet()));
         List<DiscussPost> discussPostsByIds = discussPostService
-                .findDiscussPostsByIds(discussPostIds,page.getOffset(), page.getLimit());
+                .findDiscussPostsByIds(discussPostIds, page.getOffset(), page.getLimit());
         page.setRows(discussPostService.countDiscussPostsByIds(discussPostIds));
         page.setPath("/user/userReply/" + userId);
         User user = userService.selectById(userId);
         List<Map<String, Object>> discussPosts = new ArrayList<>();
-        if(discussPostsByIds!= null && !discussPostIds.isEmpty()){
-            for(DiscussPost post: discussPostsByIds){
-                Map<String,Object> map = new HashMap<>();
-                map.put("post",post);
-                map.put("video",post.getVideo());
+        if (discussPostsByIds != null && !discussPostIds.isEmpty()) {
+            for (DiscussPost post : discussPostsByIds) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", post);
+                map.put("video", post.getVideo());
                 List imageList = new ArrayList();
-                if(!StringUtils.isBlank(post.getImages())){
+                if (!StringUtils.isBlank(post.getImages())) {
                     String[] split = post.getImages().split("[+]");
-                    for(String image : split){
-                        imageList.add(domain + contextPath + "/discuss/image/"+image);
+                    for (String image : split) {
+                        imageList.add(domain + contextPath + "/discuss/image/" + image);
                     }
                 }
-                map.put("imageList",imageList);
+                map.put("imageList", imageList);
                 long likeCount = likeService.entityLikeCount(ENTITY_TYPE_POST, post.getId());
-                map.put("likeCount",likeCount);
+                map.put("likeCount", likeCount);
                 discussPosts.add(map);
             }
         }
         //查询产品列表
         model.addAttribute("user", user);
-        model.addAttribute("postCount",page.getRows());
+        model.addAttribute("postCount", page.getRows());
         model.addAttribute("discussPosts", discussPosts);
         return "/site/my-reply";
     }
+
     @RequestMapping(path = "/userCollect/{userId}", method = RequestMethod.GET)
     public String getUserCollect(Page page, Model model, @PathVariable int userId) {
-        //page.setRows(discussPostService.getUserCollectCount(userId));
-        page.setPath("/user/userPosts/" + userId);
-        List<DiscussPost> list = discussPostService.selectDiscussPosts(userId, page.getOffset(), page.getLimit(), 0);
-        int postCount = discussPostService.selectDiscussPostRows(userId, 0);
-        List<Map<String, Object>> discussPosts = new ArrayList<>();
         User user = userService.selectById(userId);
+        page.setRows(discussPostService.getUserCollectCount(userId).intValue());
+        page.setPath("/user/userPosts/" + userId);
+        List<DiscussPost> list = discussPostService.findUserCollect(user, page.getOffset(), page.getLimit());
+        int postCount = discussPostService.getUserCollectCount(userId).intValue();
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
         if (list != null) {
             for (DiscussPost post : list) {
                 Map<String, Object> map = new HashMap<>();
@@ -259,6 +259,6 @@ public class UserController implements CommunityConstant {
         model.addAttribute("discussPosts", discussPosts);
         model.addAttribute("user", user);
         model.addAttribute("postCount", postCount);
-        return "/site/myPost";
+        return "/site/myCollect";
     }
 }
