@@ -1,9 +1,7 @@
 package com.coder.community.controller;
 
-import com.coder.community.entity.Comment;
-import com.coder.community.entity.DiscussPost;
-import com.coder.community.entity.Page;
-import com.coder.community.entity.User;
+import com.coder.community.entity.*;
+import com.coder.community.event.EventProducer;
 import com.coder.community.service.CommentService;
 import com.coder.community.service.DiscussPostService;
 import com.coder.community.service.LikeService;
@@ -41,6 +39,8 @@ public class DiscussPostController implements CommunityConstant {
     UserService userService;
     @Autowired
     HostHolder hostHolder;
+    @Autowired
+    EventProducer producer;
     @Autowired
     CommentService commentService;
     @Value("${community.path.domain}")
@@ -249,7 +249,19 @@ public class DiscussPostController implements CommunityConstant {
 
     @RequestMapping(path = "/topPost/{postId}", method = RequestMethod.GET)
     public String topPost(@PathVariable int postId) {
-        discussPostService.topPost(postId);
+        int type = discussPostService.topPost(postId);
+        DiscussPost discussPost = discussPostService.selectById(postId);
+        //触发置顶事件
+        if(type == 1){
+            Event event = new Event();
+            event.setTopic(TOPIC_TOP_POST)
+                    .setUserId(hostHolder.getUser().getId())
+                    .setEntityType(1)
+                    .setEntityId(postId)
+                    .setEntityUserId(discussPost.getUserId())
+                    .setMap("postId",postId);
+            producer.fireEvent(event);
+        }
         return "redirect:/discuss/detail/" + postId;
     }
 

@@ -66,13 +66,14 @@ public class DiscussPostService {
         return discussPostMapper.countDiscussPostsByIds(ids);
     }
 
-    public void topPost(int postId) {
+    public int topPost(int postId) {
         DiscussPost discussPost = discussPostMapper.selectById(postId);
         int type = discussPost.getType() == 0 ? 1 : 0;
         int status = discussPostMapper.updatePostType(postId, type);
         if (status != 1) {
             throw new RuntimeException("更新数据库失败");
         }
+        return type;
     }
 
     public void changeStatus(int postId, int status) {
