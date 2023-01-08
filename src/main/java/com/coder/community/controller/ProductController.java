@@ -12,13 +12,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.DateUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 
 @Controller
@@ -70,5 +74,24 @@ public class ProductController {
         productService.insertProduct(product);
         //报错情况统一处理
         return "redirect:/index";
+    }
+    @RequestMapping(path="/image/{filename}",method = RequestMethod.GET)
+    public void getImage(@PathVariable("filename")String filename, HttpServletResponse response){
+        filename = uploadPath + "/"+filename;
+        //声明文件格式
+        String suffix = filename.substring(filename.lastIndexOf('.'));
+        response.setContentType("image/"+suffix);
+        try(
+                OutputStream outputStream = response.getOutputStream();
+                FileInputStream fileInputStream = new FileInputStream(filename);
+        ) {
+            byte[]buffer = new byte[1024];
+            int b = 0;
+            while((b=fileInputStream.read(buffer))!=-1){
+                outputStream.write(buffer,0,b);
+            }
+        } catch (IOException e) {
+            logger.error("读取图片"+e.getMessage());
+        }
     }
 }

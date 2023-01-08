@@ -7,6 +7,11 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
 	<title>华师果粉网-首页</title>
+	<style>
+			.changeContext{
+				color: #0e151c;margin-left:25px ;padding-top:8px;font-weight: 400
+			}
+	</style>
 </head>
 <body>
 <div class="nk-container">
@@ -60,226 +65,246 @@
 	<!-- 内容 -->
 	<div class="main">
 		<div class="row g-5">
-		<div class="col-md-5 col-lg-4 order-md-last">
-			<h4 class="d-flex justify-content-between align-items-center mb-3">
-				<span class="text-primary">苹果产品</span>
-			</h4>
-<!--			th:if="${loginUser!=null&&loginUser.type==1}"-->
-			<button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#addProduct">增加产品</button>
-<!--			th:each="map:${discussPosts}"-->
-			<ul class="list-group mb-3" th:each="product:${productList}">
-				<li class="list-group-item d-flex justify-content-between lh-sm">
+			<div class="col-md-5 col-lg-4 order-md-last">
+				<div style="width:300px;height:300px;background-color:#eff0f2;margin-top:10px; border:2px solid #a1a1a1;border-radius:25px">
+
+					<p style="font-weight: 600;font-size: 1rem;padding-top:12px;padding-left:15px;float: left">果粉资讯</p>
+					<div id="change" style="font-weight: 400;font-size: 0.75rem;padding-top:12px;padding-left:220px;color: #a1a1a1;cursor: pointer">
+						<img src="//rs.vip.miui.com/vip-resource/prod/mifans-lts/3.5/v47/static/media/vector.3aee2b38.svg" style="float: left;margin-top: 4px">
+						<p >换一批</p>
+					</div>
+					<ul>
+						<li th:each="specialPost:${specialPostList}" style="list-style-type:none;">
+					<div style="width: 260px;height: 40px;margin-left:-50px">
+<!--						<div style="color: #fe3e29;margin-top:8px;margin-left:0px ;width: 20px ;float: left">1</div>-->
+						<div class="changeContext c1" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:250px;"><a style="color: #fe3e29;margin-top:8px;" th:text="${specialPostStat.index+1}">1</a><i>   </i><a th:utext="${specialPost.title}" th:href="@{|/discuss/detail/${specialPost.id}|}">苹果向京东方订购iPhone15和‌...</a></div>
+					</div>
+						</li>
+					</ul>
+
+
+				</div>
+				<div id="frame"style="width:300px;height:230px;padding-left:20px;margin-top:20px; border:2px solid #a1a1a1;
+	 border-radius:25px">
+					<div style="padding-bottom:9px;">
+						<p style="font-weight: 600;font-size: 1rem;padding-top:9px;padding-left:9px;float: left">推荐圈子</p>
+						<p id="choose" style="font-weight: 400;font-size: 0.75rem;padding-top:12px;padding-left:220px;color: #a1a1a1;cursor: pointer">展开</p>
+					</div>
+
 					<div>
-						<h6 class="my-0">Product name</h6>
-						<small class="text-muted">Brief description</small>
-					</div>
-					<span class="text-muted">$12</span>
-				</li>
-			</ul>
-
-			<form class="card p-2">
-				<div class="input-group">
-					<input type="text" class="form-control" placeholder="Promo code">
-					<button type="submit" class="btn btn-secondary">Redeem</button>
-				</div>
-			</form>
-		</div>
-		<div class="container">
-			<div class="position-relative">
-				<!-- 筛选条件 -->
-				<ul class="nav nav-tabs mb-3">
-					<li class="nav-item">
-						<a class="nav-link active" href="#">最新</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">最热</a>
-					</li>
-				</ul>
-				<button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">我要发布</button>
-			</div>
-			<!-- 弹出框 -->
-			<div class="modal fade" id="publishModal" tabindex="-1" role="dialog" aria-labelledby="publishModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="publishModalLabel">新帖发布</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<form class="mt-5" method="post" enctype="multipart/form-data" th:action="@{/discuss/add}">
-								<div class="form-group">
-									<label for="title" class="col-form-label">标题：</label>
-									<input type="text"
-										   class="form-control" id="title" name="title">
-								</div>
-								<div class="form-group row mt-4">
-									<label for="head-image" class="col-sm-2 col-form-label text-right">选择图片:</label>
-									<div class="col-sm-10">
-										<div class="custom-file">
-											<input type="file"
-												   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
-												   name="images"
-												   multiple="multiple"
-												   id="head-image" lang="es">
-											<label class="custom-file-label" for="head-image" data-browse="文件">选择一张图片</label>
-											<div class="invalid-feedback" th:text="${error}">
-												该账号已存在!
-											</div>
-										</div>
+							<button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#addProduct" th:if="${loginUser!=null&&loginUser.type==1}">添加产品</button>
+							<ul>
+								<li th:each="product:${productList}" style="list-style-type:none;">
+									<div  class="tooltip-show" data-toggle="tooltip" data-placement="top" title="Iphone 14" style="float: left;cursor: pointer">
+										<a  th:href="@{|/index?productId=${product.id}|}">
+									<img width="45px" height="45px" th:src="${product.imageUrl}" class="rounded-circle" alt="Cinque Terre" style="margin-right:10px">
+										</a>
+									<div  class="char" style="font-size: 0.8rem;overflow: hidden; white-space: nowrap; text-overflow: ellipsis;width:45px;" th:text="${product.productName}">iPh...14</div>
 									</div>
-								</div>
-								<div class="form-group row mt-4">
-									<label for="video" class="col-sm-2 col-form-label text-right">选择视频:</label>
-									<div class="col-sm-10">
-										<div class="custom-file">
-											<input type="file"
-												   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
-												   name="video"
-												   id="video" lang="es"  >
-											<label class="custom-file-label" for="video" data-browse="文件">选择视频</label>
-											<div class="invalid-feedback" th:text="${error}">
-												该账号已存在!
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="message-text" class="col-form-label">正文：</label>
-									<textarea class="form-control" id="message-text" rows="15" name="content"></textarea>
-								</div>
-								<div class="form-group" hidden="hidden">
-									<label for="message-text" class="col-form-label">正文：</label>
-									<input class="form-control" id="productId" rows="15" name="productId" th:value="${productId}">
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-									<button type="submit" class="btn btn-info text-white form-control">发布</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- 增加产品弹出框 -->
-			<div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProductLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="addProductLabel">添加产品</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<form class="mt-5" method="post" enctype="multipart/form-data" th:action="@{/product/add}">
-								<div class="form-group">
-									<label for="title" class="col-form-label">产品名称：</label>
-									<input type="text"
-										   class="form-control" id="name" name="name">
-								</div>
-								<div class="form-group row mt-4">
-									<label for="head-image" class="col-sm-2 col-form-label text-right">选择图片:</label>
-									<div class="col-sm-10">
-										<div class="custom-file">
-											<input type="file"
-												   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
-												   name="productImage"
-												   id="productImage" lang="es">
-											<label class="custom-file-label" for="head-image" data-browse="文件">选择一张图片</label>
-											<div class="invalid-feedback" th:text="${error}">
-												该账号已存在!
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="message-text" class="col-form-label">产品介绍：</label>
-									<textarea class="form-control" id="message-text" rows="15" name="introduction"></textarea>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-									<button type="submit" class="btn btn-info text-white form-control">发布</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- 提示框 -->
-			<div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="hintModalLabel">提示</h5>
-						</div>
-						<div class="modal-body" id="hintBody">
-							发布完毕!
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- 帖子列表 -->
-			<ul class="list-unstyled">
-				<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussPosts}">
-					<a th:href="@{|/user/profile/${map.user.id}|}">
-						<img th:src="${map.user.headerurl}"  alt="用户头像" style="width:50px;height:50px;">
-					</a>
-					<div class="media-body">
-						<h6 class="mt-0 mb-3">
-							<a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}" >备战春招，面试刷题跟他复习，一个月全搞定！</a>
-							<span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">置顶</span>
-							<span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">精华</span>
-						</h6>
-						<div class="text-muted font-size-5">
-							<video class="mr-3" th:src="${map.video}" alt="帖子视频" style="width:300px;height:300px;" controls
-								   th:if="${map.video!=null}">寒江雪</video>
-						</div>
-						<ul style="overflow:hidden;list-style:none;padding:10px 10px 0px 0px" >
-							<li th:each="image:${map.imageList}" >
-								<div class="img_content" id="imgContent" style="display: none" >
-									<div style="margin: 10px 10px 0 10px; float:left" ><img src="" width="600px" height="420px" id="imgCon"></div>
-									<div  class="colse_btn" onclick="col()">关闭</div>
-								</div>
-								<img  id="srcimg" th:src="${image}" onclick="showImg(this.src)" alt="用户图片" style="width:150px;height:105px;float:left;margin-right:25px" >
-							</li>
-						</ul>
-						<div>
-							<u class="mt-4 mb-3 content" style="font-size:15px" th:utext="${map.post.content}">寒江雪</u>
-						</div>
-						<div class="text-muted font-size-12">
-							<u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
-							<ul class="d-inline float-right">
-								<li class="d-inline ml-2">赞 <b th:text="${map.likeCount}">11</b></li>
-								<li class="d-inline ml-2">|</li>
-								<li class="d-inline ml-2">回帖<span th:text="${map.post.commentCount}"></span></li>
+								</li>
 							</ul>
+					</div>
+
+
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="position-relative">
+					<!-- 筛选条件 -->
+					<ul class="nav nav-tabs mb-3">
+						<li class="nav-item">
+							<a class="nav-link active" href="#">最新</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">最热</a>
+						</li>
+					</ul>
+					<button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">我要发布</button>
+				</div>
+				<!-- 弹出框 -->
+				<div class="modal fade" id="publishModal" tabindex="-1" role="dialog" aria-labelledby="publishModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="publishModalLabel">新帖发布</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form class="mt-5" method="post" enctype="multipart/form-data" th:action="@{/discuss/add}">
+									<div class="form-group">
+										<label for="title" class="col-form-label">标题：</label>
+										<input type="text"
+											   class="form-control" id="title" name="title">
+									</div>
+									<div class="form-group row mt-4">
+										<label for="head-image" class="col-sm-2 col-form-label text-right">选择图片:</label>
+										<div class="col-sm-10">
+											<div class="custom-file">
+												<input type="file"
+													   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
+													   name="images"
+													   multiple="multiple"
+													   id="head-image" lang="es">
+												<label class="custom-file-label" for="head-image" data-browse="文件">选择一张图片</label>
+												<div class="invalid-feedback" th:text="${error}">
+													该账号已存在!
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group row mt-4">
+										<label for="video" class="col-sm-2 col-form-label text-right">选择视频:</label>
+										<div class="col-sm-10">
+											<div class="custom-file">
+												<input type="file"
+													   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
+													   name="video"
+													   id="video" lang="es"  >
+												<label class="custom-file-label" for="video" data-browse="文件">选择视频</label>
+												<div class="invalid-feedback" th:text="${error}">
+													该账号已存在!
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="message-text" class="col-form-label">正文：</label>
+										<textarea class="form-control" id="message-text" rows="15" name="content"></textarea>
+									</div>
+									<div class="form-group" hidden="hidden">
+										<label for="message-text" class="col-form-label">正文：</label>
+										<input class="form-control" id="productId" rows="15" name="productId" th:value="${productId}">
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+										<button type="submit" class="btn btn-info text-white form-control">发布</button>
+									</div>
+								</form>
+							</div>
 						</div>
 					</div>
-				</li>
-			</ul>
-			<!-- 分页 -->
-			<nav class="mt-5" th:if="${page.rows>0}" th:fragment="pagination">
-				<ul class="pagination justify-content-center">
-					<li class="page-item">
-						<a class="page-link" th:href="@{${page.path}(current=1,productId=${productId})}">首页</a>
-					</li>
-					<li th:class="|page-item ${page.current==1?'disabled':''}|">
-						<a class="page-link" th:href="@{${page.path}(current=${page.current-1},productId=${productId})}">上一页</a></li>
-					<li th:class="|page-item ${i==page.current?'active':''}|" th:each="i:${#numbers.sequence(page.from,page.to)}">
-						<a class="page-link" th:href="@{${page.path}(current=${i},productId=${productId})}" th:text="${i}">1</a>
-					</li>
-					<li th:class="|page-item ${page.current==page.total?'disabled':''}|">
-						<a class="page-link" th:href="@{${page.path}(current=${page.current+1},productId=${productId})}">下一页</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" th:href="@{${page.path}(current=${page.total},productId=${productId})}">末页</a>
+				</div>
+				<!-- 增加产品弹出框 -->
+				<div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-labelledby="addProductLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="addProductLabel">添加产品</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form class="mt-5" method="post" enctype="multipart/form-data" th:action="@{/product/add}">
+									<div class="form-group">
+										<label for="title" class="col-form-label">产品名称：</label>
+										<input type="text"
+											   class="form-control" id="name" name="name">
+									</div>
+									<div class="form-group row mt-4">
+										<label for="head-image" class="col-sm-2 col-form-label text-right">选择图片:</label>
+										<div class="col-sm-10">
+											<div class="custom-file">
+												<input type="file"
+													   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
+													   name="productImage"
+													   id="productImage" lang="es">
+												<label class="custom-file-label" for="head-image" data-browse="文件">选择一张图片</label>
+												<div class="invalid-feedback" th:text="${error}">
+													该账号已存在!
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="message-text" class="col-form-label">产品介绍：</label>
+										<textarea class="form-control" id="message-text" rows="15" name="introduction"></textarea>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+										<button type="submit" class="btn btn-info text-white form-control">发布</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 提示框 -->
+				<div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="hintModalLabel">提示</h5>
+							</div>
+							<div class="modal-body" id="hintBody">
+								发布完毕!
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 帖子列表 -->
+				<ul class="list-unstyled">
+					<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussPosts}">
+						<a th:href="@{|/user/profile/${map.user.id}|}">
+							<img th:src="${map.user.headerurl}"  alt="用户头像" style="width:50px;height:50px;">
+						</a>
+						<div class="media-body">
+							<h6 class="mt-0 mb-3">
+								<a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}" >备战春招，面试刷题跟他复习，一个月全搞定！</a>
+								<span class="badge badge-secondary bg-primary" th:if="${map.post.type==1}">置顶</span>
+								<span class="badge badge-secondary bg-danger" th:if="${map.post.status==1}">精华</span>
+							</h6>
+							<div class="text-muted font-size-5">
+								<video class="mr-3" th:src="${map.video}" alt="帖子视频" style="width:300px;height:300px;" controls
+									   th:if="${map.video!=null}">寒江雪</video>
+							</div>
+							<ul style="overflow:hidden;list-style:none;padding:10px 10px 0px 0px" >
+								<li th:each="image:${map.imageList}" >
+									<div class="img_content" id="imgContent" style="display: none" >
+										<div style="margin: 10px 10px 0 10px; float:left" ><img src="" width="600px" height="420px" id="imgCon"></div>
+										<div  class="colse_btn" onclick="col()">关闭</div>
+									</div>
+									<img  id="srcimg" th:src="${image}" onclick="showImg(this.src)" alt="用户图片" style="width:150px;height:105px;float:left;margin-right:25px" >
+								</li>
+							</ul>
+							<div>
+								<u class="mt-4 mb-3 content" style="font-size:15px" th:utext="${map.post.content}">寒江雪</u>
+							</div>
+							<div class="text-muted font-size-12">
+								<u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布于 <b th:text="${#dates.format(map.post.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+								<ul class="d-inline float-right">
+									<li class="d-inline ml-2">赞 <b th:text="${map.likeCount}">11</b></li>
+									<li class="d-inline ml-2">|</li>
+									<li class="d-inline ml-2">回帖<span th:text="${map.post.commentCount}"></span></li>
+								</ul>
+							</div>
+						</div>
 					</li>
 				</ul>
-			</nav>
-		</div>
+				<!-- 分页 -->
+				<nav class="mt-5" th:if="${page.rows>0}" th:fragment="pagination">
+					<ul class="pagination justify-content-center">
+						<li class="page-item">
+							<a class="page-link" th:href="@{${page.path}(current=1,productId=${productId})}">首页</a>
+						</li>
+						<li th:class="|page-item ${page.current==1?'disabled':''}|">
+							<a class="page-link" th:href="@{${page.path}(current=${page.current-1},productId=${productId})}">上一页</a></li>
+						<li th:class="|page-item ${i==page.current?'active':''}|" th:each="i:${#numbers.sequence(page.from,page.to)}">
+							<a class="page-link" th:href="@{${page.path}(current=${i},productId=${productId})}" th:text="${i}">1</a>
+						</li>
+						<li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+							<a class="page-link" th:href="@{${page.path}(current=${page.current+1},productId=${productId})}">下一页</a>
+						</li>
+						<li class="page-item">
+							<a class="page-link" th:href="@{${page.path}(current=${page.total},productId=${productId})}">末页</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
 		</div>
 	</div>
 
@@ -366,6 +391,23 @@
 			document.getElementById('imgCon').src = url;
 			document.getElementById('imgContent').style.display='block';
 		}
-	 </script>
+		$(document).ready(function(){
+			$("#choose").click(function(){
+				if($("#choose").text()=="展开"){
+				$(".gg").show();
+				$("#frame").css("height","450px");
+				$("#choose").text("收起")
+				}
+				else{
+					$(".gg").hide();
+					$("#frame").css("height","230px");
+					$("#choose").text("展开")
+				}
+
+
+			});
+		});
+
+</script>
 </body>
 </html>

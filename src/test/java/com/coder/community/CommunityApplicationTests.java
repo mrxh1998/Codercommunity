@@ -67,8 +67,7 @@ class CommunityApplicationTests implements ApplicationContextAware {
 	DiscussPostMapper discussPostMapper;
 	@Test
 	public void testSelectDiscussPost(){
-		System.out.println(discussPostMapper.selectDiscussPostsRows(0));
-		System.out.println(discussPostMapper.selectDiscussPostsRows(1));
+
 	}
 	@Autowired
 	DiscussPostService discussPostService;
@@ -76,7 +75,7 @@ class CommunityApplicationTests implements ApplicationContextAware {
 	UserService userService;
 	@Test
 	public void testUserDiscussService(){
-		System.out.println(discussPostMapper.selectDiscussPostsRows(111));
+
 
 		System.out.println(userService.selectById(111).toString());
 	}

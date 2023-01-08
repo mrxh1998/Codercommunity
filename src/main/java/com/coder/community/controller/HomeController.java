@@ -33,6 +33,10 @@ public class HomeController implements CommunityConstant {
     private String uploadPath;
     @Value("${server.servlet.context-path}")
     private String contextPath;
+    @Value("${community.specialPost.maxsize}")
+    private int specialPostMaxSize;
+    @Value("${community.product.maxsize}")
+    private int productMaxSize;
     @Autowired
     UserService userService;
     @Autowired
@@ -41,14 +45,15 @@ public class HomeController implements CommunityConstant {
     LikeService likeService;
     @Autowired
     ProductService productService;
+
     @RequestMapping(path = "/index",method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page, @PathParam("productId") Integer productId){
-        page.setRows(discussPostService.selectDiscussPostRows(0));
-        page.setPath("/index");
         int product_id = 0;
         if(productId != null){
             product_id = productId;
         }
+        page.setRows(discussPostService.selectDiscussPostRows(0,product_id));
+        page.setPath("/index");
         List<DiscussPost> list = discussPostService.selectDiscussPosts(0,page.getOffset(),page.getLimit(),product_id);
         List<Map<String,Object>> discussPosts = new ArrayList<>();
         if(list!= null){
@@ -74,12 +79,18 @@ public class HomeController implements CommunityConstant {
         }
         //查询产品列表
         List<Product> productList = productService.getAllProduct();
+        if(productList.size() > productMaxSize){
+            productList = productList.subList(0,productMaxSize);
+        }
         model.addAttribute("discussPosts",discussPosts);
         model.addAttribute("productList",productList);
         model.addAttribute("productId",product_id);
         //查询资讯列表
-        List<DiscussPost> aLlSpecialPosts = discussPostService.getALlSpecialPosts();
-        model.addAttribute("specialPostList",aLlSpecialPosts);
+        List<DiscussPost> allSpecialPosts = discussPostService.getALlSpecialPosts();
+        if(allSpecialPosts.size() > specialPostMaxSize){
+            allSpecialPosts = allSpecialPosts.subList(0,specialPostMaxSize);
+        }
+        model.addAttribute("specialPostList",allSpecialPosts);
         return "/index";
     }
 

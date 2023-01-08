@@ -31,6 +31,9 @@
         <if test="userId != 0">
             and user_id = #{userId}
         </if>
+        <if test="productId != 0">
+            and product_id = #{productId}
+        </if>
     </select>
     <insert id="insertDiscussPost" parameterType="DiscussPost">
         insert into discuss_post(<include refid="insertFields"></include>)

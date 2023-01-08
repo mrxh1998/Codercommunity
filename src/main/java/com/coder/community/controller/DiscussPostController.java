@@ -117,6 +117,9 @@ public class DiscussPostController implements CommunityConstant {
         if(product_id != 0){
             post.setProductId(product_id);
         }
+        if(user.getType() == 1){
+            post.setType(2);
+        }
         discussPostService.insertDiscussPost(post);
         //报错情况统一处理
         return "redirect:/index"+"?"+"productId="+product_id;
