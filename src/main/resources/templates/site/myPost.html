@@ -71,10 +71,9 @@
 							<a class="nav-link active"  th:href="@{|/user/userPosts/${user.id}|}" th:text="${loginUser.id==user.id?'我的帖子':'他的帖子'}">我的帖子</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="my-reply.html">我的回复</a>
+							<a class="nav-link"th:href="@{|/user/userReply/${user.id}|}" th:if="${loginUser.id==user.id}">我的回复</a>
 						</li>
 					</ul>
-					<a href="profile.html" class="text-muted position-absolute rt-0">返回个人主页&gt;</a>
 				</div>
 				<!-- 我的帖子 -->
 				<div class="mt-4">
@@ -82,7 +81,7 @@
 					<ul class="list-unstyled mt-4 pl-3 pr-3" >
 						<li class="border-bottom pb-3 mt-4" th:each="map:${discussPosts}">
 							<div class="font-size-16 text-info">
-								<a href="#" class="text-info" th:text="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
+								<a href="#" class="text-info" th:utext="${map.post.title}" th:href="@{|/discuss/detail/${map.post.id}|}" >备战春招，面试刷题跟他复习，一个月全搞定！</a>
 							</div>
 							<div class="text-muted font-size-5">
 								<video class="mr-3" th:src="${map.video}" alt="帖子视频" style="width:300px;height:300px;" controls
@@ -201,5 +200,15 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 	<script th:src="@{/js/global.js}"></script>
 	<script th:src="@{/js/profile.js}"></script>
+	<script>
+	function col() {
+	document.getElementById('imgContent').style.display='none';
+	document.getElementById('srcimg').style.display='block';
+	}
+	function showImg(url) {
+	document.getElementById('imgCon').src = url;
+	document.getElementById('imgContent').style.display='block';
+	}
+	</script>
 </body>
 </html>

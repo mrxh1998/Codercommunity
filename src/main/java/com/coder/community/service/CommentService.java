@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CommentService {
@@ -32,7 +33,12 @@ public class CommentService {
     public Comment findCommentById(int id){
         return commentMapper.selectCommentById(id);
     }
-
+    public List<Comment> findCommentByUserId(int userId){
+        return commentMapper.selectCommentByUserId(userId);
+    }
+    public int countCommentByUserId(int userId){
+        return commentMapper.countCommentByUserId(userId);
+    }
     @Transactional(isolation = Isolation.READ_COMMITTED,propagation = Propagation.REQUIRED)
     public int addComment(Comment comment){
         if(comment == null){
@@ -46,5 +52,8 @@ public class CommentService {
             discussPostService.updateDiscussPostCount(count,comment.getEntityId());
         }
         return i;
+    }
+    public List<Comment> selectCommentByIds(Set<Integer> ids){
+        return commentMapper.selectCommentsByIds(ids);
     }
 }

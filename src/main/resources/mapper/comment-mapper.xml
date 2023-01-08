@@ -15,6 +15,11 @@
         order by create_time asc
         limit #{offset},#{limit}
     </select>
+    <select id="selectCommentByUserId" resultType="Comment">
+        select <include refid="selectFields"></include> from comment
+        where user_id = #{userId} and status = 0
+        order by create_time Desc
+    </select>
     <select id="selectCountByEntity" resultType="int">
         select count(id)
         from comment
@@ -28,5 +33,18 @@
     <select id="selectCommentById" resultType="Comment">
         select <include refid="selectFields"></include> from comment
         where id = #{id}
+    </select>
+    <select id="countCommentByUserId" resultType="int">
+    select count(id)
+    from comment
+    where status = 0
+    and user_id = #{userId}
+    </select>
+    <select id="selectCommentsByIds" resultType="Comment">
+        select <include refid="selectFields"></include> from comment
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 </mapper>

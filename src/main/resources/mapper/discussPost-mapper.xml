@@ -13,7 +13,6 @@
         select <include refid="selectFields"></include>
         from discuss_post
         where status != 2
-        and type != 2
         <if test="userId != 0">
             and user_id = #{userId}
         </if>
@@ -27,7 +26,6 @@
         select count(id)
         from discuss_post
         where status != 2
-        and type != 2
         <if test="userId != 0">
             and user_id = #{userId}
         </if>
@@ -53,5 +51,22 @@
         where type = 2
         and status != 2
         order by create_time DESC
+    </select>
+    <select id="selectDiscussPostsByIds" resultType="DiscussPost">
+        select <include refid="selectFields"></include> from discuss_post
+        where status != 2
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        order by create_time DESC
+    </select>
+    <select id="countDiscussPostsByIds" resultType="int">
+        select count(id) from discuss_post
+        where status != 2
+        and id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 </mapper>
