@@ -270,6 +270,16 @@ public class DiscussPostController implements CommunityConstant {
         DiscussPost discussPost = discussPostService.selectById(postId);
         int status = discussPost.getStatus() == 1 ? 0 : 1;
         discussPostService.changeStatus(postId, status);
+        if(status == 1){
+            Event event = new Event();
+            event.setTopic(TOPIC_STATUS_POST)
+                    .setUserId(hostHolder.getUser().getId())
+                    .setEntityType(1)
+                    .setEntityId(postId)
+                    .setEntityUserId(discussPost.getUserId())
+                    .setMap("postId",postId);
+            producer.fireEvent(event);
+        }
         return "redirect:/discuss/detail/" + postId;
     }
 

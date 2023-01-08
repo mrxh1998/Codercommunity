@@ -35,7 +35,11 @@ public interface CommunityConstant {
      */
     int SYSTEM_USER_ID = 1;
     /**
-     * 事件：收藏
+     * 事件：置顶
      */
     String TOPIC_TOP_POST = "topPost";
+    /**
+     * 事件：加精
+     */
+    String TOPIC_STATUS_POST = "status";
 }

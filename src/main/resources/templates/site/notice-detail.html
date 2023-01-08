@@ -108,7 +108,13 @@
 								<span th:if="${map.notice.conversationId == 'topPost'}">用户
 									<i th:text="${map.user.username}">nowcoder</i>
 									置顶了你的帖子
-									<a class="text-primary" th:href="@{|/user/profile/${map.user.id}|}">点击查看</a> !
+									<a class="text-primary" th:href="@{|/discuss/detail/${map.postId}|}">点击查看</a> !
+								</span>
+								<!--加精-->
+								<span th:if="${map.notice.conversationId == 'status'}">用户
+									<i th:text="${map.user.username}">nowcoder</i>
+									加精了你的帖子
+									<a class="text-primary" th:href="@{|/discuss/detail/${map.postId}|}">点击查看</a> !
 								</span>
 							</div>
 						</div>
