@@ -52,6 +52,11 @@
         set type = #{type}
         where id = #{id}
     </update>
+    <update id="updatePostStatus">
+        update discuss_post
+        set status = #{status}
+        where id = #{id}
+    </update>
     <select id="selectAllSpecialPosts" resultType="DiscussPost">
         select <include refid="selectFields"></include> from discuss_post
         where type = 2

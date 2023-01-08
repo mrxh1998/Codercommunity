@@ -67,4 +67,10 @@ public class DiscussPostService {
             throw new RuntimeException("更新数据库失败");
         }
     }
+    public void changeStatus(int postId,int status){
+        int i = discussPostMapper.updatePostStatus(postId, status);
+        if(i != 1){
+            throw new RuntimeException("更新数据库失败");
+        }
+    }
 }

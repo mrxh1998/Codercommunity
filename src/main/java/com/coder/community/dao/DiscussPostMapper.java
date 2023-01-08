@@ -26,4 +26,6 @@ public interface DiscussPostMapper {
     int countDiscussPostsByIds(Set<Integer>ids);
 
     int updatePostType(int id,int type);
+
+    int updatePostStatus(int id,int status);
 }
