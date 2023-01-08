@@ -74,7 +74,7 @@
 						<a  th:href="@{|/discuss/changeStatus/${post.id}|}"	>
 							<button type="button" class="btn btn-danger btn-sm" th:if="${loginUser!=null && loginUser.type == 1}"  th:text="${post.status==1?'取消加精':'加精'}">加精</button>
 						</a>
-						<a>
+						<a th:href="@{|/discuss/deletePost/${post.id}|}"	>
 							<button type="button" class="btn btn-danger btn-sm" th:if="${loginUser!=null && loginUser.type == 1}">删除</button>
 						</a>
 					</div>

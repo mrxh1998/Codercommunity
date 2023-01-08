@@ -256,4 +256,9 @@ public class DiscussPostController implements CommunityConstant {
         discussPostService.changeStatus(postId, status);
         return "redirect:/discuss/detail/" + postId;
     }
+    @RequestMapping(path = "/deletePost/{postId}", method = RequestMethod.GET)
+    public String deletePost(@PathVariable int postId) {
+        discussPostService.changeStatus(postId, 2);
+        return "redirect:/index";
+    }
 }
