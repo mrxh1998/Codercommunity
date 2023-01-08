@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -51,9 +52,19 @@ public class DiscussPostService {
     }
 
     public List<DiscussPost> findDiscussPostsByIds(Set<Integer> ids, int offset, int limit) {
-        return discussPostMapper.selectDiscussPostsByIds(ids,offset,limit);
+        return discussPostMapper.selectDiscussPostsByIds(ids, offset, limit);
     }
-    public int countDiscussPostsByIds(Set<Integer>ids){
+
+    public int countDiscussPostsByIds(Set<Integer> ids) {
         return discussPostMapper.countDiscussPostsByIds(ids);
+    }
+
+    public void topPost(int postId){
+        DiscussPost discussPost = discussPostMapper.selectById(postId);
+        int type = discussPost.getType() == 0 ? 1 : 0;
+        int status = discussPostMapper.updatePostType(postId,type);
+        if(status != 1){
+            throw new RuntimeException("更新数据库失败");
+        }
     }
 }

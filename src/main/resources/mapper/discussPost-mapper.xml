@@ -47,6 +47,11 @@
         set comment_count = #{count}
         where id = #{id}
     </update>
+    <update id="updatePostType">
+        update discuss_post
+        set type = #{type}
+        where id = #{id}
+    </update>
     <select id="selectAllSpecialPosts" resultType="DiscussPost">
         select <include refid="selectFields"></include> from discuss_post
         where type = 2

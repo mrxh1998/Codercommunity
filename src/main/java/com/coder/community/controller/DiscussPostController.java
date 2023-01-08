@@ -238,4 +238,9 @@ public class DiscussPostController implements CommunityConstant {
         model.addAttribute("comments",commentVoList);
         return "/site/discuss-detail";
     }
+    @RequestMapping(path="/topPost/{postId}",method = RequestMethod.GET)
+    public String topPost(@PathVariable int postId){
+        discussPostService.topPost(postId);
+        return "redirect:/discuss/detail/"+postId;
+    }
 }
