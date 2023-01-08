@@ -42,4 +42,8 @@ public interface CommunityConstant {
      * 事件：加精
      */
     String TOPIC_STATUS_POST = "status";
+    /**
+     * 事件：收藏
+     */
+    String TOPIC_COLLECT_POST = "collect";
 }

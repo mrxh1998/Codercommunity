@@ -252,14 +252,14 @@ public class DiscussPostController implements CommunityConstant {
         int type = discussPostService.topPost(postId);
         DiscussPost discussPost = discussPostService.selectById(postId);
         //触发置顶事件
-        if(type == 1){
+        if (type == 1) {
             Event event = new Event();
             event.setTopic(TOPIC_TOP_POST)
                     .setUserId(hostHolder.getUser().getId())
                     .setEntityType(1)
                     .setEntityId(postId)
                     .setEntityUserId(discussPost.getUserId())
-                    .setMap("postId",postId);
+                    .setMap("postId", postId);
             producer.fireEvent(event);
         }
         return "redirect:/discuss/detail/" + postId;
@@ -270,14 +270,14 @@ public class DiscussPostController implements CommunityConstant {
         DiscussPost discussPost = discussPostService.selectById(postId);
         int status = discussPost.getStatus() == 1 ? 0 : 1;
         discussPostService.changeStatus(postId, status);
-        if(status == 1){
+        if (status == 1) {
             Event event = new Event();
             event.setTopic(TOPIC_STATUS_POST)
                     .setUserId(hostHolder.getUser().getId())
                     .setEntityType(1)
                     .setEntityId(postId)
                     .setEntityUserId(discussPost.getUserId())
-                    .setMap("postId",postId);
+                    .setMap("postId", postId);
             producer.fireEvent(event);
         }
         return "redirect:/discuss/detail/" + postId;
@@ -293,10 +293,21 @@ public class DiscussPostController implements CommunityConstant {
     public String collectPost(@PathVariable int postId) {
         User user = hostHolder.getUser();
         boolean collectPost = discussPostService.isCollectPost(user.getId(), postId);
+        DiscussPost discussPost = discussPostService.selectById(postId);
         if (collectPost) {
             discussPostService.unCollect(user.getId(), postId);
         } else {
             discussPostService.collect(user.getId(), postId);
+        }
+        if (!collectPost) {
+            Event event = new Event();
+            event.setTopic(TOPIC_COLLECT_POST)
+                    .setUserId(hostHolder.getUser().getId())
+                    .setEntityType(1)
+                    .setEntityId(postId)
+                    .setEntityUserId(discussPost.getUserId())
+                    .setMap("postId", postId);
+            producer.fireEvent(event);
         }
         return "redirect:/discuss/detail/" + postId;
     }
