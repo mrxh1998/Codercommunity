@@ -9,6 +9,26 @@ public class RedisKeyUtil {
     private static final String PREFIX_KAPTCHA = "kaptcha";
     private static final String PREFIX_TICKER = "ticket";
     private static final String PREFIX_USER = "user";
+    private static final String PREFIX_USER_COLLECT = "userCollect";
+    private static final String PREFIX_POST_COLLECTED = "postCollected";
+    private static final String PREFIX_USER_COLLECT_COUNT = "userCollectCount";
+    private static final String PREFIX_POST_COLLECTED_COUNT = "userCollectCount";
+    //用户收藏的帖子计数
+    public static String getUserCollectCountKey(int userId){
+        return PREFIX_USER_COLLECT_COUNT + SPLIT + userId;
+    }
+    //收藏帖子的人数计数
+    public static String getPostCollectedCountKey(int postId){
+        return PREFIX_POST_COLLECTED_COUNT + SPLIT + postId;
+    }
+    //收藏某个帖子的用户
+    public static String getPostCollectedKey(int postId){
+        return PREFIX_POST_COLLECTED + SPLIT + postId;
+    }
+    //某个用户收藏的帖子
+    public static String getUserCollectKey(int userId){
+        return PREFIX_USER_COLLECT + SPLIT + userId;
+    }
     //某个实体的赞
     public static String getEntityLikeKey(int entityType,int entityId){
         return PREFIX_ENTITY_LIKE + SPLIT + entityType + SPLIT + entityId;
