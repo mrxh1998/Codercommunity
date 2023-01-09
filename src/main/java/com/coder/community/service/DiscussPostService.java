@@ -26,12 +26,12 @@ public class DiscussPostService {
     @Autowired
     RedisTemplate redisTemplate;
 
-    public List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int productId) {
-        return discussPostMapper.selectDiscussPosts(userId, offset, limit, productId);
+    public List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int productId, String like) {
+        return discussPostMapper.selectDiscussPosts(userId, offset, limit, productId, like);
     }
 
-    public int selectDiscussPostRows(int userId, int productId) {
-        return discussPostMapper.selectDiscussPostsRows(userId, productId);
+    public int selectDiscussPostRows(int userId, int productId, String like) {
+        return discussPostMapper.selectDiscussPostsRows(userId, productId, like);
     }
 
     public int insertDiscussPost(DiscussPost post) {

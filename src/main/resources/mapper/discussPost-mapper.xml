@@ -20,6 +20,9 @@
         <if test="productId != 0">
             and product_id = #{productId}
         </if>
+        <if test="like != null">
+            and  title like CONCAT('%',#{like},'%')
+        </if>
         order by type DESC,create_time DESC
         limit #{offset},#{limit}
     </select>
@@ -32,6 +35,9 @@
         </if>
         <if test="productId != 0">
             and product_id = #{productId}
+        </if>
+        <if test="like != null">
+            and  title like CONCAT('%',#{like},'%')
         </if>
     </select>
     <insert id="insertDiscussPost" parameterType="DiscussPost">

@@ -54,8 +54,8 @@
 						</li>
 					</ul>
 					<!-- 搜索 -->
-					<form class="form-inline my-2 my-lg-0" action="site/search.html">
-						<input class="form-control mr-sm-2" type="search" aria-label="Search" />
+					<form class="form-inline my-2 my-lg-0" action="/community/index" name="search" id="search">
+						<input name="like" class="form-control mr-sm-2" type="search"  oninput="OnInput (event)" onpropertychange="OnPropChanged (event)"  aria-label="Search" value=""/>
 						<button class="btn btn-outline-light my-2 my-sm-0" type="submit">搜索</button>
 					</form>
 				</div>
@@ -421,7 +421,19 @@
 
 			});
 		});
+</script>
+<script>
+<!--        function OnInput (event) {-->
+<!--        		document.search.action = "/community/index?like="+ event.target.value-->
+<!--				//document.search.action = '/index?like='+ event.target.value;-->
+<!--        }-->
+<!--        function OnPropChanged (event) {-->
+<!--            if (event.propertyName.toLowerCase () == "value") {-->
+<!--                document.search.action = "/community/index?like="+ event.srcElement.value-->
 
+<!--            	//document.search.action = '/index?like='+ event.srcElement.value;-->
+<!--            }-->
+<!--        }-->
 </script>
 </body>
 </html>

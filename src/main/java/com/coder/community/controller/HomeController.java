@@ -46,59 +46,59 @@ public class HomeController implements CommunityConstant {
     @Autowired
     ProductService productService;
 
-    @RequestMapping(path = "/index",method = RequestMethod.GET)
-    public String getIndexPage(Model model, Page page, @PathParam("productId") Integer productId){
+    @RequestMapping(path = "/index", method = RequestMethod.GET)
+    public String getIndexPage(Model model, Page page, @PathParam("productId") Integer productId, @PathParam("like") String like) {
         int product_id = 0;
-        if(productId != null){
+        if (productId != null) {
             product_id = productId;
         }
-        page.setRows(discussPostService.selectDiscussPostRows(0,product_id));
+        page.setRows(discussPostService.selectDiscussPostRows(0, product_id, like));
         page.setPath("/index");
-        List<DiscussPost> list = discussPostService.selectDiscussPosts(0,page.getOffset(),page.getLimit(),product_id);
-        List<Map<String,Object>> discussPosts = new ArrayList<>();
-        if(list!= null){
-            for(DiscussPost post: list){
+        List<DiscussPost> list = discussPostService.selectDiscussPosts(0, page.getOffset(), page.getLimit(), product_id, like);
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
+        if (list != null) {
+            for (DiscussPost post : list) {
                 int userId = post.getUserId();
                 User user = userService.selectById(userId);
-                Map<String,Object> map = new HashMap<>();
-                map.put("post",post);
-                map.put("user",user);
-                map.put("video",post.getVideo());
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", post);
+                map.put("user", user);
+                map.put("video", post.getVideo());
                 List imageList = new ArrayList();
-                if(!StringUtils.isBlank(post.getImages())){
+                if (!StringUtils.isBlank(post.getImages())) {
                     String[] split = post.getImages().split("[+]");
-                    for(String image : split){
-                        imageList.add(domain + contextPath + "/discuss/image/"+image);
+                    for (String image : split) {
+                        imageList.add(domain + contextPath + "/discuss/image/" + image);
                     }
                 }
-                map.put("imageList",imageList);
+                map.put("imageList", imageList);
                 long likeCount = likeService.entityLikeCount(ENTITY_TYPE_POST, post.getId());
-                map.put("likeCount",likeCount);
+                map.put("likeCount", likeCount);
                 discussPosts.add(map);
             }
         }
         //查询产品列表
         List<Product> productList = productService.getAllProduct();
-        if(productList.size() > productMaxSize){
-            productList = productList.subList(0,productMaxSize);
+        if (productList.size() > productMaxSize) {
+            productList = productList.subList(0, productMaxSize);
         }
-        model.addAttribute("discussPosts",discussPosts);
-        model.addAttribute("productList",productList);
-        model.addAttribute("productId",product_id);
+        model.addAttribute("discussPosts", discussPosts);
+        model.addAttribute("productList", productList);
+        model.addAttribute("productId", product_id);
         //查询资讯列表
         List<DiscussPost> allSpecialPosts = discussPostService.getALlSpecialPosts();
-        if(allSpecialPosts.size() > specialPostMaxSize){
-            allSpecialPosts = allSpecialPosts.subList(0,specialPostMaxSize);
+        if (allSpecialPosts.size() > specialPostMaxSize) {
+            allSpecialPosts = allSpecialPosts.subList(0, specialPostMaxSize);
         }
         //查询当前产品
         Product productById = productService.findProductById(product_id);
-        model.addAttribute("product",productById);
-        model.addAttribute("specialPostList",allSpecialPosts);
+        model.addAttribute("product", productById);
+        model.addAttribute("specialPostList", allSpecialPosts);
         return "/index";
     }
 
-    @RequestMapping(path = "/error",method = RequestMethod.GET)
-    public String getErrorPage(){
+    @RequestMapping(path = "/error", method = RequestMethod.GET)
+    public String getErrorPage() {
         return "/error/500";
     }
 }

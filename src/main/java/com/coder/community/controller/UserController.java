@@ -155,10 +155,10 @@ public class UserController implements CommunityConstant {
 
     @RequestMapping(path = "/userPosts/{userId}", method = RequestMethod.GET)
     public String getUserPosts(Page page, Model model, @PathVariable int userId) {
-        page.setRows(discussPostService.selectDiscussPostRows(0, 0));
+        page.setRows(discussPostService.selectDiscussPostRows(0, 0,null));
         page.setPath("/user/userPosts/" + userId);
-        List<DiscussPost> list = discussPostService.selectDiscussPosts(userId, page.getOffset(), page.getLimit(), 0);
-        int postCount = discussPostService.selectDiscussPostRows(userId, 0);
+        List<DiscussPost> list = discussPostService.selectDiscussPosts(userId, page.getOffset(), page.getLimit(), 0,null);
+        int postCount = discussPostService.selectDiscussPostRows(userId, 0,null);
         List<Map<String, Object>> discussPosts = new ArrayList<>();
         User user = userService.selectById(userId);
         if (list != null) {
