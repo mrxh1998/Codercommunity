@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en" xmlns:th="http:www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" href="https://img.zcool.cn/community/01a59e58299749a84a0e282b1c3760.jpg@1280w_1l_2o_100sh.jpg"/>
+	<link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
-	<title>华师果粉网-500</title>
+	<title>牛客网-404</title>
 </head>
 <body>
 	<div class="nk-container">
@@ -61,7 +61,7 @@
 		<!-- 内容 -->
 		<div class="main">
 			<div class="container pl-5 pr-5 pt-3 pb-3 mt-3 mb-3">
-				<img th:src="@{/img/error.png}" >
+				<img th:src="@{/img/404.png}" >
 			</div>
 		</div>
 
